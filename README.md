@@ -22,4 +22,4 @@ go run main.go
 
 El servidor estara corriendo en `localhost:2222`, puedes hacer una prueba haciendo una peticion `GET` al endpoint `http://localhost:2222/`
 
-Para crear la base de datos estara disponible en `localhost:8080` una instancia de phpmyadmin.
+Para crear o administrar graficamente la base de datos estara disponible en `localhost:8080` una instancia de phpmyadmin.
