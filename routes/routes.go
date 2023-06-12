@@ -16,4 +16,7 @@ func RegisterRoutes(e *echo.Echo) {
 
 	// Put methods
 	e.PUT("/api/v1/users/:id", h.UpdateUser, m.ValidateUser)
+
+	// Delete methods
+	e.DELETE("api/v1/users/:id", h.DeleteUser)
 }
