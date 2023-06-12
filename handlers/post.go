@@ -32,3 +32,34 @@ func CreateUser(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, user)
 }
+
+func CreateMessage(c echo.Context) error {
+	db, err := data.ConnectToDB()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+
+	defer func() {
+		dbSQL, err := db.DB()
+		if err != nil {
+			return
+		}
+		dbSQL.Close()
+	}()
+
+	var message = new(models.Message)
+
+	if err := c.Bind(message); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"message": "Invalid request body",
+		})
+	}
+
+	if err := db.Create(&message).Error; err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, message)
+}

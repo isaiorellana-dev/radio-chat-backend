@@ -10,13 +10,17 @@ func RegisterRoutes(e *echo.Echo) {
 	// Get methods
 	e.GET("/api/v1/", h.HelloWorld)
 	e.GET("/api/v1/users", h.GetUsers)
+	e.GET("/api/v1/users/:id", h.GetOneUser)
+	e.GET("/api/v1/messages", h.GetMessages)
 
 	// Post methods
 	e.POST("/api/v1/users", h.CreateUser, m.ValidateUser)
+	e.POST("/api/v1/messages", h.CreateMessage)
 
 	// Put methods
 	e.PUT("/api/v1/users/:id", h.UpdateUser, m.ValidateUser)
 
 	// Delete methods
 	e.DELETE("api/v1/users/:id", h.DeleteUser)
+	e.DELETE("/api/v1/messages/:id", h.DeleteMessage)
 }

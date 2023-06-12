@@ -34,3 +34,30 @@ func DeleteUser(c echo.Context) error {
 		"message": "User deleted",
 	})
 }
+
+func DeleteMessage(c echo.Context) error {
+	db, err := data.ConnectToDB()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+
+	defer func() {
+		dbSQL, err := db.DB()
+		if err != nil {
+			return
+		}
+		dbSQL.Close()
+	}()
+
+	messageId := c.Param("id")
+
+	if err := db.Delete(&models.Message{}, messageId).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"error": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]string{
+		"message": "Message deleted",
+	})
+}
