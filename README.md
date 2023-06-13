@@ -23,3 +23,37 @@ go run main.go
 El servidor estara corriendo en `localhost:2222`, puedes hacer una prueba haciendo una peticion `GET` al endpoint `http://localhost:2222/`
 
 Para crear o administrar graficamente la base de datos estara disponible en `localhost:8080` una instancia de phpmyadmin.
+
+## Production
+
+1. Crear una red de docker
+
+```shell
+docker network create echo-api-network
+```
+
+2. Crear y ejecutar los contenedores de la base de datos y phpmyadmin
+
+```shell
+docker-compose up
+```
+
+3. Build al Dockerfile
+
+```shell
+docker build . -t echo-api-app
+```
+
+4. Crear y ejecutar el contenedor
+
+```shell
+docker run --name echo-api-rest -p 2222:2222 echo-api-app
+```
+
+5. Conectar los contenedores a la red.
+
+```shell
+docker network connect echo-api-network echo-api-template-db-server-1
+docker network connect echo-api-network echo-api-template-phpmyadmin-1
+docker network connect echo-api-network echo-api-rest
+```
