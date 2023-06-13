@@ -9,6 +9,7 @@ services:
       - "3306:3306"
     volumes:
       - db-server-data:/var/lib/mysql
+    hostname: db-server
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
@@ -20,6 +21,5 @@ services:
       - "8080:80"
     depends_on:
       - db-server
-
 volumes:
   db-server-data:

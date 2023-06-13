@@ -11,7 +11,7 @@ func ConnectToDB() (*gorm.DB, error) {
 	user := "root"
 	password := "root"
 	port := "3306"
-	ip := "localhost"
+	ip := "db-server"
 	// Change the name of the schema
 	schema := "my-schema"
 
