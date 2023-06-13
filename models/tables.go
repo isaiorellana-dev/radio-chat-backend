@@ -3,15 +3,15 @@ package models
 import "time"
 
 type User struct {
-	ID        int       `json:"id" gorm:"type:int"`
-	Nickname  string    `json:"nickname" validate:"required,min=3,alphaunicode" gorm:"size:20"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID        int       `json:"id" gorm:"type:int;primaryKey;not null;autoIncrement;unique"`
+	Nickname  string    `json:"nickname" validate:"required,min=3,alphaunicode" gorm:"size:20;unique;not null"`
+	CreatedAt time.Time `json:"created_at" gorm:"not null"`
+	UpdatedAt time.Time `json:"updated_at" gorm:"not null"`
 }
 
 type Message struct {
-	ID        int       `json:"id" gorm:"type:int"`
-	Body      string    `json:"body" gorm:"size:255"`
-	CreatedAt time.Time `json:"created_at"`
-	UserID    int       `json:"user_id" gorm:"foreignKey:UserID, type:int"`
+	ID        int       `json:"id" gorm:"type:int;primaryKey;not null;autoIncrement;unique"`
+	Body      string    `json:"body" validate:"required,min=3" gorm:"size:255;not null"`
+	CreatedAt time.Time `json:"created_at" gorm:"not null"`
+	UserID    int       `json:"user_id" validate:"required" gorm:"foreignKey:UserID"`
 }
