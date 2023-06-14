@@ -20,7 +20,7 @@ docker-compose up
 go run main.go
 ```
 
-El servidor estara corriendo en `localhost:2222`, puedes hacer una prueba haciendo una peticion `GET` al endpoint `http://localhost:2222/`
+El servidor estara corriendo en `localhost:5050`, puedes hacer una prueba haciendo una peticion `GET` al endpoint `http://localhost:5050/api/v1/`
 
 Para crear o administrar graficamente la base de datos estara disponible en `localhost:8080` una instancia de phpmyadmin.
 
@@ -47,7 +47,7 @@ docker build . -t echo-api-app
 4. Crear y ejecutar el contenedor
 
 ```shell
-docker run --name echo-api-rest -p 2222:2222 echo-api-app
+docker run --name echo-api-rest -p 5050:5050 echo-api-app
 ```
 
 5. Conectar los contenedores a la red.

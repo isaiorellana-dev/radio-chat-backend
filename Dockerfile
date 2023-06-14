@@ -23,10 +23,10 @@ FROM scratch AS runner
 
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
-# COPY .env ./
+COPY .env ./
 
 COPY --from=builder /echo-api-template /echo-api-template
 
-EXPOSE 2222
+EXPOSE 5050
 
 ENTRYPOINT [ "/echo-api-template" ]

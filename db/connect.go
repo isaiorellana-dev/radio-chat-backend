@@ -2,24 +2,23 @@ package database
 
 import (
 	"fmt"
+	"log"
+	"os"
 
 	"github.com/isaiorellana-dev/radio-api/models"
+	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 func ConnectToDB() (*gorm.DB, error) {
-	user := "root"
-	password := "root"
-	port := "3306"
-	// para probar el dockerfile cambiar localhost por "db-server"
-	ip := "localhost"
-	// Change the name of the schema
-	schema := "my-schema"
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	DB_URL := os.Getenv("DB_URL")
 
-	dsn := user + ":" + password + "@tcp(" + ip + ":" + port + ")/" + schema + "?charset=utf8mb4&parseTime=True&loc=Local"
-
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(DB_URL), &gorm.Config{})
 	if err != nil {
 		return nil, fmt.Errorf("error conectando a la base de datos: %w", err)
 	}
