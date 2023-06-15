@@ -47,13 +47,7 @@ func CreateMessage(c echo.Context) error {
 		dbSQL.Close()
 	}()
 
-	var message = new(models.Message)
-
-	if err := c.Bind(message); err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"message": "Invalid request body",
-		})
-	}
+	var message = c.Get("message").(*models.Message)
 
 	if err := db.Create(&message).Error; err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{

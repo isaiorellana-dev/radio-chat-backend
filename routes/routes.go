@@ -15,7 +15,7 @@ func RegisterRoutes(e *echo.Echo) {
 
 	// Post methods
 	e.POST("/api/v1/users", h.CreateUser, m.ValidateUser)
-	e.POST("/api/v1/messages", h.CreateMessage)
+	e.POST("/api/v1/messages", h.CreateMessage, m.ValidateUserExist, m.ValidateMessage)
 
 	// Put methods
 	e.PUT("/api/v1/users/:id", h.UpdateUser, m.ValidateUser)
