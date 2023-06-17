@@ -3,9 +3,8 @@ package handlers
 import (
 	"net/http"
 
-	data "github.com/isaiorellana-dev/radio-api/db"
-	"github.com/isaiorellana-dev/radio-api/models"
-	m "github.com/isaiorellana-dev/radio-api/models"
+	data "github.com/isaiorellana-dev/radio-chat-backend/db"
+	m "github.com/isaiorellana-dev/radio-chat-backend/models"
 	"github.com/labstack/echo/v4"
 )
 
@@ -27,9 +26,9 @@ func GetUsers(c echo.Context) error {
 		dbSQL.Close()
 	}()
 
-	var users []m.User
+	var users []m.UserToReturn
 
-	if err := db.Find(&users).Error; err != nil {
+	if err := db.Find(&[]m.User{}).Scan(&users).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
 
@@ -50,11 +49,11 @@ func GetOneUser(c echo.Context) error {
 		dbSQL.Close()
 	}()
 
-	var user models.User
+	var user m.UserToReturn
 
 	userID := c.Param("id")
 
-	if err := db.First(&user, userID).Error; err != nil {
+	if err := db.Select("id, nickname, created_at, updated_at").First(&m.User{}, userID).Scan(&user).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
 

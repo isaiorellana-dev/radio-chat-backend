@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/isaiorellana-dev/radio-api/models"
+	"github.com/isaiorellana-dev/radio-chat-backend/models"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

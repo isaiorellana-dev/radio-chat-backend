@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"github.com/go-playground/validator/v10"
-	data "github.com/isaiorellana-dev/radio-api/db"
-	"github.com/isaiorellana-dev/radio-api/models"
+	data "github.com/isaiorellana-dev/radio-chat-backend/db"
+	"github.com/isaiorellana-dev/radio-chat-backend/models"
 	"github.com/labstack/echo/v4"
 )
 
@@ -17,6 +17,7 @@ func ValidateUser(next echo.HandlerFunc) echo.HandlerFunc {
 		if err := c.Bind(user); err != nil {
 			return c.JSON(http.StatusBadRequest, map[string]string{
 				"message": "Invalid request body",
+				"error":   err.Error(),
 			})
 		}
 
@@ -34,7 +35,7 @@ func ValidateUser(next echo.HandlerFunc) echo.HandlerFunc {
 	}
 }
 
-func ValidateUserExist(next echo.HandlerFunc) echo.HandlerFunc {
+func ValidateUserByID(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var message = new(models.Message)
 

@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/isaiorellana-dev/radio-api/routes"
+	"github.com/isaiorellana-dev/radio-chat-backend/routes"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"

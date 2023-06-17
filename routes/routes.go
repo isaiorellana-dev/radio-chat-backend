@@ -1,8 +1,8 @@
 package routes
 
 import (
-	h "github.com/isaiorellana-dev/radio-api/handlers"
-	m "github.com/isaiorellana-dev/radio-api/middlewares"
+	h "github.com/isaiorellana-dev/radio-chat-backend/handlers"
+	m "github.com/isaiorellana-dev/radio-chat-backend/middlewares"
 	"github.com/labstack/echo/v4"
 )
 
@@ -14,8 +14,9 @@ func RegisterRoutes(e *echo.Echo) {
 	e.GET("/api/v1/messages", h.GetMessages)
 
 	// Post methods
-	e.POST("/api/v1/users", h.CreateUser, m.ValidateUser)
-	e.POST("/api/v1/messages", h.CreateMessage, m.ValidateUserExist, m.ValidateMessage)
+	e.POST("/api/v1/register", h.Register, m.ValidateUser)
+	e.POST("/api/v1/messages", h.CreateMessage, m.ValidateUserByID, m.ValidateMessage)
+	e.POST("/api/v1/login", h.Login)
 
 	// Put methods
 	e.PUT("/api/v1/users/:id", h.UpdateUser, m.ValidateUser)
