@@ -1,13 +1,87 @@
 {
   "_type": "export",
   "__export_format": 4,
-  "__export_date": "2023-06-17T16:23:55.878Z",
+  "__export_date": "2023-06-19T21:30:27.471Z",
   "__export_source": "insomnia.desktop.app:v2023.2.2",
   "resources": [
     {
+      "_id": "req_2c8bfea601c04992b94435712cc4812d",
+      "parentId": "fld_68019525934943aa9f13dfbd4172cba1",
+      "modified": 1687205717770,
+      "created": 1687203742431,
+      "url": "http://localhost:5050/api/v1/role",
+      "name": "Create a Role",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"name\": \"guest\"\n}"
+      },
+      "parameters": [],
+      "headers": [{ "name": "Content-Type", "value": "application/json" }],
+      "authentication": {},
+      "metaSortKey": -1687203742431,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_68019525934943aa9f13dfbd4172cba1",
+      "parentId": "wrk_c5ec1c467c5c461695238abdaeeee873",
+      "modified": 1687203738960,
+      "created": 1687203738960,
+      "name": "Roles and permissions",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1687203738960,
+      "_type": "request_group"
+    },
+    {
+      "_id": "wrk_c5ec1c467c5c461695238abdaeeee873",
+      "parentId": null,
+      "modified": 1686231270735,
+      "created": 1686231270735,
+      "name": "echo-api-template.yaml",
+      "description": "",
+      "scope": "design",
+      "_type": "workspace"
+    },
+    {
+      "_id": "req_71810f59b8204c3ab96845b76dd624d9",
+      "parentId": "fld_68019525934943aa9f13dfbd4172cba1",
+      "modified": 1687207481513,
+      "created": 1687205538878,
+      "url": "http://localhost:5050/api/v1/permission",
+      "name": "Create a Permission",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"name\": \"read_messages\"\n}"
+      },
+      "parameters": [],
+      "headers": [{ "name": "Content-Type", "value": "application/json" }],
+      "authentication": {},
+      "metaSortKey": -1686896585919.5,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
       "_id": "req_50d78f5e23544e1dacd3633130a94b88",
       "parentId": "fld_494e022f355c44af92e3464cd7f98ed2",
-      "modified": 1687018665962,
+      "modified": 1687191130907,
       "created": 1686589429408,
       "url": "http://localhost:5050/api/v1/messages",
       "name": "Get all",
@@ -15,8 +89,21 @@
       "method": "GET",
       "body": {},
       "parameters": [],
-      "headers": [],
-      "authentication": {},
+      "headers": [
+        {
+          "id": "pair_dd201c99951c405c986c26c88f738c11",
+          "name": "Authorization",
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjMzLCJOaWNrbmFtZSI6IiIsImV4cCI6MTY4NzEwMjUzOH0.FOU6seT5glt0DQuqGCAaKGUHSNPx1hAGX_-b7BZ92x8",
+          "description": "",
+          "disabled": true
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOjM5LCJOaWNrbmFtZSI6IklzYWkiLCJleHAiOjE2ODcyNzY3MTh9.Wp5SI3dL9AWKapQEDXXAjHrR6_QBu_t2b0uL-9qguI8",
+        "prefix": "",
+        "disabled": false
+      },
       "metaSortKey": -1686589429408,
       "isPrivate": false,
       "settingStoreCookies": true,
@@ -40,19 +127,9 @@
       "_type": "request_group"
     },
     {
-      "_id": "wrk_c5ec1c467c5c461695238abdaeeee873",
-      "parentId": null,
-      "modified": 1686231270735,
-      "created": 1686231270735,
-      "name": "echo-api-template.yaml",
-      "description": "",
-      "scope": "design",
-      "_type": "workspace"
-    },
-    {
       "_id": "req_b6ac5888d5274ac58306ac446589f023",
       "parentId": "fld_494e022f355c44af92e3464cd7f98ed2",
-      "modified": 1686933130794,
+      "modified": 1687181920796,
       "created": 1686589448962,
       "url": "http://localhost:5050/api/v1/messages",
       "name": "Create one",
@@ -60,7 +137,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n\t\"body\": \"Hello\",\n\t \"user_id\": 2\n}"
+        "text": "{\n\t\"body\": \"Hello\",\n\t \"user_id\": 37\n}"
       },
       "parameters": [],
       "headers": [{ "name": "Content-Type", "value": "application/json" }],
@@ -159,7 +236,7 @@
     {
       "_id": "req_4611008766d4474c8c86d26e61851b6e",
       "parentId": "fld_4564d7b1718248289ba703b3732d02e7",
-      "modified": 1687018681377,
+      "modified": 1687209708645,
       "created": 1686233587068,
       "url": "http://localhost:5050/api/v1/register",
       "name": "Create one",
@@ -167,7 +244,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n \"nickname\": \"Nuedvostest\",\n\t\"pin\": \"1234\"\n}"
+        "text": "{\n \"nickname\": \"JuanPerez\",\n\t\"pin\": \"1234\"\n}"
       },
       "parameters": [],
       "headers": [{ "name": "Content-Type", "value": "application/json" }],
@@ -185,7 +262,7 @@
     {
       "_id": "req_9fb13a07d73c4805b8c349762e2ad7f4",
       "parentId": "fld_4564d7b1718248289ba703b3732d02e7",
-      "modified": 1687015232887,
+      "modified": 1687186895757,
       "created": 1686948575125,
       "url": "http://localhost:5050/api/v1/login",
       "name": "Login",
@@ -193,7 +270,7 @@
       "method": "POST",
       "body": {
         "mimeType": "application/json",
-        "text": "{\n \"nickname\": \"Nuevotest\",\n\t\"pin\": \"1234\"\n}"
+        "text": "{\n \"nickname\": \"Isai\",\n\t\"pin\": \"1234\"\n}"
       },
       "parameters": [],
       "headers": [{ "name": "Content-Type", "value": "application/json" }],
