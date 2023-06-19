@@ -35,6 +35,13 @@ func ValidateUser(next echo.HandlerFunc) echo.HandlerFunc {
 	}
 }
 
+func VerifyRol(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+
+		return next(c)
+	}
+}
+
 func ValidateUserByID(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var message = new(models.Message)

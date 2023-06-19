@@ -148,3 +148,67 @@ func CreateMessage(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, message)
 }
+
+func CreateRole(c echo.Context) error {
+	db, err := data.ConnectToDB()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+
+	defer func() {
+		dbSQL, err := db.DB()
+		if err != nil {
+			return
+		}
+		dbSQL.Close()
+	}()
+
+	var Role = new(m.Role)
+
+	if err := c.Bind(&Role); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"message": "Invalid request body",
+			"error":   err.Error(),
+		})
+	}
+
+	if err := db.Create(&Role).Error; err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, Role)
+}
+
+func CreatePermission(c echo.Context) error {
+	db, err := data.ConnectToDB()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+
+	defer func() {
+		dbSQL, err := db.DB()
+		if err != nil {
+			return
+		}
+		dbSQL.Close()
+	}()
+
+	var Permission = new(m.Permission)
+
+	if err := c.Bind(&Permission); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"message": "Invalid request body",
+			"error":   err.Error(),
+		})
+	}
+
+	if err := db.Create(&Permission).Error; err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, Permission)
+}

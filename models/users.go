@@ -7,9 +7,10 @@ import (
 )
 
 type UserToReturn struct {
-	ID        int
-	Nickname  string
-	CreatedAt time.Time
+	ID        int       `json:"id"`
+	Nickname  string    `json:"nickname"`
+	Role      string    `json:"role"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 type UserLogin struct {

@@ -28,7 +28,10 @@ func GetUsers(c echo.Context) error {
 
 	var users []m.UserToReturn
 
-	if err := db.Find(&[]m.User{}).Scan(&users).Error; err != nil {
+	if err := db.Table("users").
+		Select("users.id, users.nickname, roles.name as role, users.created_at").
+		Joins("JOIN roles ON users.rol_id = roles.id").
+		Scan(&users).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
 

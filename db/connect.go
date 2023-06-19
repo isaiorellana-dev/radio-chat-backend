@@ -24,7 +24,7 @@ func ConnectToDB() (*gorm.DB, error) {
 	}
 
 	// Ejecuta la migración automática para crear las tablas y el esquema
-	err = db.AutoMigrate(&models.User{}, &models.Message{})
+	err = db.AutoMigrate(&models.User{}, &models.Message{}, &models.Role{}, &models.Permission{})
 	if err != nil {
 		panic(err)
 	}
