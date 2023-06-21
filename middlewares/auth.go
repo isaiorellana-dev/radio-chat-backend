@@ -15,8 +15,10 @@ import (
 
 var (
 	NO_AUTH_NEEDED = []string{
+		"/hello",
 		"/login",
 		"/signup",
+		"/messages",
 	}
 )
 

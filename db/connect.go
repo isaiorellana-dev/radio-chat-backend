@@ -23,7 +23,6 @@ func ConnectToDB() (*gorm.DB, error) {
 		return nil, fmt.Errorf("error conectando a la base de datos: %w", err)
 	}
 
-	// Ejecuta la migración automática para crear las tablas y el esquema
 	err = db.AutoMigrate(&models.User{}, &models.Message{}, &models.Role{}, &models.Permission{})
 	if err != nil {
 		panic(err)

@@ -8,7 +8,7 @@ import (
 
 func RegisterRoutes(e *echo.Echo) {
 	// Get methods
-	e.GET("/api/v1/", h.HelloWorld)
+	e.GET("/api/v1/hello", h.HelloWorld)
 	e.GET("/api/v1/users", h.GetUsers, m.CheckPermissions(h.GetUsersPerms))
 	e.GET("/api/v1/users/:id", h.GetOneUser)
 	e.GET("/api/v1/messages", h.GetMessages)
