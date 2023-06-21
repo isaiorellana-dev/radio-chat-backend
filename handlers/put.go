@@ -11,7 +11,7 @@ import (
 func UpdateUser(c echo.Context) error {
 	db, err := data.ConnectToDB()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		return c.JSON(http.StatusInternalServerError, objectStr{"error": err.Error()})
 	}
 
 	defer func() {
@@ -27,15 +27,15 @@ func UpdateUser(c echo.Context) error {
 	userID := c.Param("id")
 
 	if err := db.First(&user, userID).Error; err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		return c.JSON(http.StatusInternalServerError, objectStr{"error": err.Error()})
 	}
 	if user.Nickname == nickname {
-		return c.JSON(http.StatusBadRequest, map[string]string{"error": "the nickname has no changes"})
+		return c.JSON(http.StatusBadRequest, objectStr{"error": "the nickname has no changes"})
 	}
 	user.Nickname = nickname
 
 	if err := db.Save(&user).Error; err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		return c.JSON(http.StatusInternalServerError, objectStr{"error": err.Error()})
 	}
 
 	return c.JSON(http.StatusOK, user)

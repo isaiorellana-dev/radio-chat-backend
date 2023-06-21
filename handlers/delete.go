@@ -1,8 +1,10 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 
+	"github.com/golang-jwt/jwt"
 	data "github.com/isaiorellana-dev/radio-chat-backend/db"
 	"github.com/isaiorellana-dev/radio-chat-backend/models"
 	"github.com/labstack/echo/v4"
@@ -11,7 +13,7 @@ import (
 func DeleteUser(c echo.Context) error {
 	db, err := data.ConnectToDB()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		return c.JSON(http.StatusInternalServerError, objectStr{"error": err.Error()})
 	}
 
 	defer func() {
@@ -22,15 +24,36 @@ func DeleteUser(c echo.Context) error {
 		dbSQL.Close()
 	}()
 
-	userId := c.Param("id")
+	var token = c.Get("token").(*jwt.Token)
+	claims, _ := token.Claims.(*models.AppClaims)
 
-	if err := db.Delete(&models.User{}, userId).Error; err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
+	fmt.Println(claims)
+
+	var role models.Role
+	var permissions []models.Permission
+
+	// Buscar el rol por ID y cargar los permisos relacionados
+	db.Preload("Permissions").First(&role, claims.RolID)
+
+	// Obtener los permisos del rol
+	fmt.Println(permissions)
+
+	var permission = new(models.Permission)
+	if err := db.First(&permission).Where("").Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, objectStr{
 			"error": err.Error(),
 		})
 	}
 
-	return c.JSON(http.StatusOK, map[string]string{
+	userId := c.Param("id")
+
+	if err := db.Delete(&models.User{}, userId).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, objectStr{
+			"error": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, objectStr{
 		"message": "User deleted",
 	})
 }
@@ -38,7 +61,7 @@ func DeleteUser(c echo.Context) error {
 func DeleteMessage(c echo.Context) error {
 	db, err := data.ConnectToDB()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		return c.JSON(http.StatusInternalServerError, objectStr{"error": err.Error()})
 	}
 
 	defer func() {
@@ -52,12 +75,12 @@ func DeleteMessage(c echo.Context) error {
 	messageId := c.Param("id")
 
 	if err := db.Delete(&models.Message{}, messageId).Error; err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
+		return c.JSON(http.StatusInternalServerError, objectStr{
 			"error": err.Error(),
 		})
 	}
 
-	return c.JSON(http.StatusOK, map[string]string{
+	return c.JSON(http.StatusOK, objectStr{
 		"message": "Message deleted",
 	})
 }

@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -18,7 +19,7 @@ import (
 func Register(c echo.Context) error {
 	db, err := data.ConnectToDB()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		return c.JSON(http.StatusInternalServerError, objectStr{"error": err.Error()})
 	}
 
 	defer func() {
@@ -35,7 +36,7 @@ func Register(c echo.Context) error {
 	HASH := os.Getenv("HASH_COST")
 	HASH_COST, err := strconv.Atoi(HASH)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
+		return c.JSON(http.StatusInternalServerError, objectStr{
 			"eror": "Invalid Hash Cost",
 		})
 	}
@@ -44,7 +45,7 @@ func Register(c echo.Context) error {
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Pin), HASH_COST)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
+		return c.JSON(http.StatusInternalServerError, objectStr{
 			"error": err.Error(),
 		})
 	}
@@ -53,7 +54,7 @@ func Register(c echo.Context) error {
 	userRegistered := m.UserRegister{}
 
 	if err := db.Create(&user).Scan(&userRegistered).Error; err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
+		return c.JSON(http.StatusBadRequest, objectStr{
 			"error": err.Error(),
 		})
 	}
@@ -64,7 +65,7 @@ func Register(c echo.Context) error {
 func Login(c echo.Context) error {
 	db, err := data.ConnectToDB()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		return c.JSON(http.StatusInternalServerError, objectStr{"error": err.Error()})
 	}
 
 	defer func() {
@@ -83,7 +84,7 @@ func Login(c echo.Context) error {
 	var login = new(m.UserLogin)
 
 	if err := c.Bind(login); err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
+		return c.JSON(http.StatusBadRequest, objectStr{
 			"message": "Invalid request body",
 			"error":   err.Error(),
 		})
@@ -91,13 +92,17 @@ func Login(c echo.Context) error {
 
 	var user = new(m.User)
 
-	if err := db.First(&m.User{}, "nickname = ?", login.Nickname).Scan(&user).Error; err != nil {
-		return c.JSON(http.StatusUnauthorized, map[string]string{
+	if err := db.Table("users").
+		Select("users.id, users.nickname, users.pin, users.rol_id").Where("nickname = ?", login.Nickname).
+		Scan(&user).Error; err != nil {
+		return c.JSON(http.StatusUnauthorized, objectStr{
 			"message": "invalid credentials",
 		})
 	}
+	fmt.Println(user)
+
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Pin), []byte(login.Pin)); err != nil {
-		return c.JSON(http.StatusUnauthorized, map[string]string{
+		return c.JSON(http.StatusUnauthorized, objectStr{
 			"message": "invalid credentials",
 		})
 	}
@@ -105,21 +110,25 @@ func Login(c echo.Context) error {
 	claims := m.AppClaims{
 		UserID:   user.ID,
 		Nickname: user.Nickname,
+		RolID:    user.RolID,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
 		},
 	}
+	fmt.Println(claims, "hellllo")
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	tokenString, err := token.SignedString([]byte(JWT_SECRET))
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
+		return c.JSON(http.StatusInternalServerError, objectStr{
 			"message": "error en servidor",
 		})
 	}
 
-	return c.JSON(http.StatusOK, map[string]string{
+	fmt.Println(c.Request().URL.Path, claims)
+
+	return c.JSON(http.StatusOK, objectStr{
 		"token": tokenString,
 	})
 }
@@ -127,7 +136,7 @@ func Login(c echo.Context) error {
 func CreateMessage(c echo.Context) error {
 	db, err := data.ConnectToDB()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		return c.JSON(http.StatusInternalServerError, objectStr{"error": err.Error()})
 	}
 
 	defer func() {
@@ -141,7 +150,7 @@ func CreateMessage(c echo.Context) error {
 	var message = c.Get("message").(*m.Message)
 
 	if err := db.Create(&message).Error; err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
+		return c.JSON(http.StatusBadRequest, objectStr{
 			"error": err.Error(),
 		})
 	}
@@ -152,7 +161,7 @@ func CreateMessage(c echo.Context) error {
 func CreateRole(c echo.Context) error {
 	db, err := data.ConnectToDB()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		return c.JSON(http.StatusInternalServerError, objectStr{"error": err.Error()})
 	}
 
 	defer func() {
@@ -166,14 +175,14 @@ func CreateRole(c echo.Context) error {
 	var Role = new(m.Role)
 
 	if err := c.Bind(&Role); err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
+		return c.JSON(http.StatusBadRequest, objectStr{
 			"message": "Invalid request body",
 			"error":   err.Error(),
 		})
 	}
 
 	if err := db.Create(&Role).Error; err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
+		return c.JSON(http.StatusBadRequest, objectStr{
 			"error": err.Error(),
 		})
 	}
@@ -184,7 +193,7 @@ func CreateRole(c echo.Context) error {
 func CreatePermission(c echo.Context) error {
 	db, err := data.ConnectToDB()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+		return c.JSON(http.StatusInternalServerError, objectStr{"error": err.Error()})
 	}
 
 	defer func() {
@@ -198,14 +207,14 @@ func CreatePermission(c echo.Context) error {
 	var Permission = new(m.Permission)
 
 	if err := c.Bind(&Permission); err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
+		return c.JSON(http.StatusBadRequest, objectStr{
 			"message": "Invalid request body",
 			"error":   err.Error(),
 		})
 	}
 
 	if err := db.Create(&Permission).Error; err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
+		return c.JSON(http.StatusBadRequest, objectStr{
 			"error": err.Error(),
 		})
 	}

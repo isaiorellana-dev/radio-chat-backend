@@ -24,8 +24,16 @@ type UserRegister struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
+type UserLoginDB struct {
+	ID       int
+	Nickname string
+	Pin      string
+	Role     string
+}
+
 type AppClaims struct {
 	UserID   int
 	Nickname string
+	RolID    int
 	jwt.StandardClaims
 }

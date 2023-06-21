@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	m "github.com/isaiorellana-dev/radio-chat-backend/middlewares"
 	"github.com/isaiorellana-dev/radio-chat-backend/routes"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
@@ -14,6 +15,7 @@ func main() {
 	e := echo.New()
 
 	e.Use(middleware.Logger())
+	e.Use(m.CheckJWT)
 
 	routes.RegisterRoutes(e)
 

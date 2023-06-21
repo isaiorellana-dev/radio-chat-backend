@@ -12,7 +12,7 @@ type User struct {
 	Pin       string    `json:"pin" validate:"required,min=4,numeric" gorm:"type:string;not null"`
 	CreatedAt time.Time `json:"created_at" gorm:"not null"`
 	UpdatedAt time.Time `json:"updated_at" gorm:"not null"`
-	RolID     string    `json:"rol" gorm:"type:int;foreignKey:RolID;not null;default:2"`
+	RolID     int       `json:"rol_id" gorm:"type:int;foreignKey:RolID;not null;default:2"`
 }
 
 type Message struct {
