@@ -155,6 +155,8 @@ func CreateMessage(c echo.Context) error {
 		})
 	}
 
+	// hub := ws.G
+
 	return c.JSON(http.StatusOK, message)
 }
 

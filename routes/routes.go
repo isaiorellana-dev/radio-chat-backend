@@ -1,12 +1,24 @@
 package routes
 
 import (
+	"fmt"
+
 	h "github.com/isaiorellana-dev/radio-chat-backend/handlers"
 	m "github.com/isaiorellana-dev/radio-chat-backend/middlewares"
+	ws "github.com/isaiorellana-dev/radio-chat-backend/websocket"
 	"github.com/labstack/echo/v4"
 )
 
 func RegisterRoutes(e *echo.Echo) {
+
+	hub := ws.NewHub()
+	go hub.Run()
+
+	e.GET("/ws", func(c echo.Context) error {
+		fmt.Println("Hola desde el hanlder")
+		return ws.ServeWs(hub, c)
+	})
+
 	// Get methods
 	e.GET("/api/v1/hello", h.HelloWorld)
 	e.GET("/api/v1/users", h.GetUsers, m.CheckPermissions(h.GetUsersPerms))
