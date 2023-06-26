@@ -112,6 +112,11 @@ func CheckPermissions(requiredPerms []string) echo.MiddlewareFunc {
 		return func(c echo.Context) error {
 
 			var token = c.Get("token").(*jwt.Token)
+
+			if token == nil {
+				return c.JSON(http.StatusInternalServerError, objectStr{"error": "error con el token de la wea esta"})
+			}
+
 			claims, _ := token.Claims.(*models.AppClaims)
 
 			permissions, err := getPermissions(claims.RolID)

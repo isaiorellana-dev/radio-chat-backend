@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -9,12 +8,9 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt"
+	"github.com/isaiorellana-dev/radio-chat-backend/context"
 	data "github.com/isaiorellana-dev/radio-chat-backend/db"
 	m "github.com/isaiorellana-dev/radio-chat-backend/models"
-
-	"github.com/isaiorellana-dev/radio-chat-backend/context"
-
-	// "github.com/isaiorellana-dev/radio-chat-backend/routes"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
@@ -103,7 +99,6 @@ func Login(c echo.Context) error {
 			"message": "invalid credentials",
 		})
 	}
-	fmt.Println(user)
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Pin), []byte(login.Pin)); err != nil {
 		return c.JSON(http.StatusUnauthorized, objectStr{
@@ -119,7 +114,6 @@ func Login(c echo.Context) error {
 			ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
 		},
 	}
-	fmt.Println(claims, "hellllo")
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
@@ -129,8 +123,6 @@ func Login(c echo.Context) error {
 			"message": "error en servidor",
 		})
 	}
-
-	fmt.Println(c.Request().URL.Path, claims)
 
 	return c.JSON(http.StatusOK, objectStr{
 		"token": tokenString,
@@ -163,8 +155,6 @@ func CreateMessage(c echo.Context) error {
 	}
 
 	hub.Messages <- message
-
-	// hub := ws.G
 
 	return c.JSON(http.StatusOK, message)
 }

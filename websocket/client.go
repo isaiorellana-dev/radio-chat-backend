@@ -3,15 +3,12 @@ package ws
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"time"
 
 	"github.com/gorilla/websocket"
 	m "github.com/isaiorellana-dev/radio-chat-backend/models"
-
-	// m "github.com/isaiorellana-dev/radio-chat-backend/models"
 	"github.com/labstack/echo/v4"
 )
 
@@ -129,12 +126,7 @@ func (c *Client) writePump() {
 	}
 }
 
-// func (c *Client) SendMessage(message *m.Message) {
-// 	c.hub.messages <- message
-// }
-
 func ServeWs(hub *Hub, c echo.Context) error {
-	fmt.Println("hello desde el server")
 	conn, err := upgrader.Upgrade(c.Response(), c.Request(), nil)
 	if err != nil {
 		log.Println(err)
