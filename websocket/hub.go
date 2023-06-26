@@ -6,7 +6,7 @@ import (
 
 type Hub struct {
 	clients    map[*Client]bool
-	Messages   chan *m.Message
+	Messages   chan *m.MessageWithUser
 	register   chan *Client
 	unregister chan *Client
 }
@@ -14,7 +14,7 @@ type Hub struct {
 func NewHub() *Hub {
 	return &Hub{
 		clients:    make(map[*Client]bool),
-		Messages:   make(chan *m.Message),
+		Messages:   make(chan *m.MessageWithUser),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
 	}

@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/golang-jwt/jwt"
 	data "github.com/isaiorellana-dev/radio-chat-backend/db"
 	"github.com/isaiorellana-dev/radio-chat-backend/models"
 	"github.com/labstack/echo/v4"
@@ -46,6 +47,10 @@ func ValidateUserByID(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var message = new(models.Message)
 
+		var token = c.Get("token").(*jwt.Token)
+
+		claims, _ := token.Claims.(*models.AppClaims)
+
 		if err := c.Bind(message); err != nil {
 			return c.JSON(http.StatusBadRequest, map[string]string{
 				"error": err.Error(),
@@ -65,7 +70,7 @@ func ValidateUserByID(next echo.HandlerFunc) echo.HandlerFunc {
 			dbSQL.Close()
 		}()
 
-		if err := db.First(&models.User{}, message.UserID).Error; err != nil {
+		if err := db.First(&models.User{}, claims.UserID).Error; err != nil {
 			return c.JSON(http.StatusNotFound, map[string]string{"error": "user not found"})
 		}
 

@@ -19,7 +19,7 @@ type Message struct {
 	ID        int       `json:"id" gorm:"type:int;primaryKey;not null;autoIncrement;unique"`
 	Body      string    `json:"body" validate:"required,min=1" gorm:"size:255;not null"`
 	CreatedAt time.Time `json:"created_at" gorm:"not null"`
-	UserID    int       `json:"user_id" validate:"required" gorm:"foreignKey:UserID"`
+	UserID    int       `json:"user_id" gorm:"foreignKey:UserID"`
 }
 
 type Role struct {

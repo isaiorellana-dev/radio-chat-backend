@@ -114,7 +114,7 @@ func CheckPermissions(requiredPerms []string) echo.MiddlewareFunc {
 			var token = c.Get("token").(*jwt.Token)
 
 			if token == nil {
-				return c.JSON(http.StatusInternalServerError, objectStr{"error": "error con el token de la wea esta"})
+				return c.JSON(http.StatusInternalServerError, objectStr{"error": "no token or invalid token"})
 			}
 
 			claims, _ := token.Claims.(*models.AppClaims)

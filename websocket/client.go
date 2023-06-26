@@ -35,7 +35,7 @@ var upgrader = websocket.Upgrader{
 type Client struct {
 	hub  *Hub
 	conn *websocket.Conn
-	send chan *m.Message
+	send chan *m.MessageWithUser
 }
 
 func (c *Client) readPump() {
@@ -61,7 +61,7 @@ func (c *Client) readPump() {
 		}
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
 
-		receivedMessage := &m.Message{}
+		receivedMessage := &m.MessageWithUser{}
 		err = json.Unmarshal(message, receivedMessage)
 		if err != nil {
 			log.Printf("error al deserializar el mensaje: %v", err)
@@ -132,7 +132,7 @@ func ServeWs(hub *Hub, c echo.Context) error {
 		log.Println(err)
 		return err
 	}
-	client := &Client{hub: hub, conn: conn, send: make(chan *m.Message, 256)}
+	client := &Client{hub: hub, conn: conn, send: make(chan *m.MessageWithUser, 256)}
 	client.hub.register <- client
 
 	go client.writePump()

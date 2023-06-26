@@ -10,6 +10,7 @@ import (
 	"github.com/golang-jwt/jwt"
 	"github.com/isaiorellana-dev/radio-chat-backend/context"
 	data "github.com/isaiorellana-dev/radio-chat-backend/db"
+	"github.com/isaiorellana-dev/radio-chat-backend/models"
 	m "github.com/isaiorellana-dev/radio-chat-backend/models"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
@@ -143,10 +144,16 @@ func CreateMessage(c echo.Context) error {
 		dbSQL.Close()
 	}()
 
+	var token = c.Get("token").(*jwt.Token)
+
+	claims, _ := token.Claims.(*models.AppClaims)
+
 	cc := c.(*context.CustomContext)
 	hub := cc.Hub
 
 	var message = c.Get("message").(*m.Message)
+
+	message.UserID = claims.UserID
 
 	if err := db.Create(&message).Error; err != nil {
 		return c.JSON(http.StatusBadRequest, objectStr{
@@ -154,7 +161,14 @@ func CreateMessage(c echo.Context) error {
 		})
 	}
 
-	hub.Messages <- message
+	var messageWithUser = models.MessageWithUser{
+		ID:        message.ID,
+		Nickname:  claims.Nickname,
+		Body:      message.Body,
+		CreatedAt: message.CreatedAt,
+	}
+
+	hub.Messages <- &messageWithUser
 
 	return c.JSON(http.StatusOK, message)
 }
