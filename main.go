@@ -14,7 +14,6 @@ func main() {
 	e := echo.New()
 
 	e.Use(middleware.Logger())
-	// e.Use(m.CheckJWT)
 
 	routes.RegisterRoutes(e)
 

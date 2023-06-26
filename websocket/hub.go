@@ -9,7 +9,7 @@ import (
 type Hub struct {
 	clients map[*Client]bool
 	// broadcast  chan []byte
-	messages   chan *m.Message
+	Messages   chan *m.Message
 	register   chan *Client
 	unregister chan *Client
 }
@@ -19,7 +19,7 @@ func NewHub() *Hub {
 	return &Hub{
 		clients: make(map[*Client]bool),
 		// broadcast:  make(chan []byte),
-		messages:   make(chan *m.Message),
+		Messages:   make(chan *m.Message),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
 	}
@@ -45,7 +45,7 @@ func (h *Hub) Run() {
 		// 			delete(h.clients, client)
 		// 		}
 		// 	}
-		case message := <-h.messages:
+		case message := <-h.Messages:
 			// messageBytes, err := json.Marshal(message)
 			// if err != nil {
 			// 	fmt.Println("Error marshaling message:", err)

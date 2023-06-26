@@ -11,6 +11,10 @@ import (
 	"github.com/golang-jwt/jwt"
 	data "github.com/isaiorellana-dev/radio-chat-backend/db"
 	m "github.com/isaiorellana-dev/radio-chat-backend/models"
+
+	"github.com/isaiorellana-dev/radio-chat-backend/context"
+
+	// "github.com/isaiorellana-dev/radio-chat-backend/routes"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
@@ -147,6 +151,9 @@ func CreateMessage(c echo.Context) error {
 		dbSQL.Close()
 	}()
 
+	cc := c.(*context.CustomContext)
+	hub := cc.Hub
+
 	var message = c.Get("message").(*m.Message)
 
 	if err := db.Create(&message).Error; err != nil {
@@ -154,6 +161,8 @@ func CreateMessage(c echo.Context) error {
 			"error": err.Error(),
 		})
 	}
+
+	hub.Messages <- message
 
 	// hub := ws.G
 

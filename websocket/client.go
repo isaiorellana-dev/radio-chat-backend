@@ -10,6 +10,8 @@ import (
 
 	"github.com/gorilla/websocket"
 	m "github.com/isaiorellana-dev/radio-chat-backend/models"
+
+	// m "github.com/isaiorellana-dev/radio-chat-backend/models"
 	"github.com/labstack/echo/v4"
 )
 
@@ -69,7 +71,7 @@ func (c *Client) readPump() {
 			continue
 		}
 
-		c.hub.messages <- receivedMessage
+		c.hub.Messages <- receivedMessage
 	}
 }
 

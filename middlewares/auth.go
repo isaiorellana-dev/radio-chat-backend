@@ -19,6 +19,7 @@ var (
 		"/login",
 		"/signup",
 		"/messages",
+		"/ws",
 	}
 )
 
