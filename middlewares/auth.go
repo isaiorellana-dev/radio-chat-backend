@@ -125,10 +125,10 @@ func CheckPermissions(requiredPerms []string) echo.MiddlewareFunc {
 			}
 
 			hasPermissions := false
-			for _, rp := range requiredPerms {
+			for _, requiredPerm := range requiredPerms {
 				hasPerm := false
-				for _, p := range permissions {
-					if rp == p {
+				for _, perm := range permissions {
+					if requiredPerm == perm {
 						hasPerm = true
 						break
 					}
