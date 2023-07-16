@@ -6,4 +6,4 @@ release:
   image: web
 
 run:
-  web: ./main
+  web: ./radio-chat-backend
