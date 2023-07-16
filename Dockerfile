@@ -23,7 +23,7 @@ FROM scratch AS runner
 
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
-COPY .env ./
+# COPY .env ./
 
 COPY --from=builder /radio-chat-backend /radio-chat-backend
 
