@@ -17,7 +17,7 @@ COPY ./ ./
 
 RUN CGO_ENABLED=0 go build \
   -installsuffix 'static' \
-  -o /echo-api-template
+  -o /radio-chat-backend
 
 FROM scratch AS runner
 
@@ -25,8 +25,8 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 COPY .env ./
 
-COPY --from=builder /echo-api-template /echo-api-template
+COPY --from=builder /radio-chat-backend /radio-chat-backend
 
 EXPOSE 5050
 
-ENTRYPOINT [ "/echo-api-template" ]
+ENTRYPOINT [ "/radio-chat-backend" ]
