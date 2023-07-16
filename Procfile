@@ -1,1 +1,1 @@
-web: radio-chat-backend
+web: go run main.go
