@@ -17,7 +17,7 @@ func RegisterRoutes(e *echo.Echo) {
 	prefix := "/api/v1"
 
 	// Hello world
-	e.GET(prefix+"/hello", h.HelloWorld)
+	e.GET("/", h.HelloWorld)
 
 	// Websocket
 	e.GET("/ws", func(c echo.Context) error {
