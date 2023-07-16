@@ -14,30 +14,32 @@ func RegisterRoutes(e *echo.Echo) {
 
 	e.Use(m.CustomContextMiddleware(hub), m.CheckJWT)
 
+	// Hello world
+	e.GET("/api/v1/hello", h.HelloWorld)
+
+	// Websocket
 	e.GET("/ws", func(c echo.Context) error {
 		return ws.ServeWs(hub, c)
 	})
 
-	// Get methods
-	e.GET("/api/v1/hello", h.HelloWorld)
+	// Users
 	e.GET("/api/v1/users", h.GetUsers, m.CheckPermissions(h.GetUsersPerms))
 	e.GET("/api/v1/users/:id", h.GetOneUser)
-	e.GET("/api/v1/messages", h.GetMessages)
-
-	// Post methods
+	e.DELETE("api/v1/users/:id", h.DeleteUser, m.CheckPermissions(h.DeleteUserPerms))
+	e.PUT("/api/v1/users/:id", h.UpdateUser, m.ValidateUser)
 	e.POST("/api/v1/signup", h.Register, m.ValidateUser)
-	e.POST("/api/v1/message", h.CreateMessage,
+	e.POST("/api/v1/login", h.Login)
+
+	// Messages
+	e.GET("/api/v1/messages", h.GetMessages)
+	e.POST("/api/v1/messages", h.CreateMessage,
 		m.CheckPermissions(h.CreateMessagePerms),
 		m.ValidateUserByID,
 		m.ValidateMessage)
-	e.POST("/api/v1/login", h.Login)
+	e.DELETE("/api/v1/messages/:id", h.DeleteMessage, m.CheckPermissions(h.DeleteMessagePerms))
+
+	// Roles and permissions
 	e.POST("/api/v1/role", h.CreateRole, m.CheckPermissions(h.CreateRolePerms))
 	e.POST("/api/v1/permission", h.CreatePermission, m.CheckPermissions(h.CreatePermissionsPerms))
 
-	// Put methods
-	e.PUT("/api/v1/users/:id", h.UpdateUser, m.ValidateUser)
-
-	// Delete methods
-	e.DELETE("api/v1/users/:id", h.DeleteUser, m.CheckPermissions(h.DeleteUserPerms))
-	e.DELETE("/api/v1/message/:id", h.DeleteMessage, m.CheckPermissions(h.DeleteMessagePerms))
 }

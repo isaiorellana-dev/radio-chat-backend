@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -13,13 +14,34 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+type authRule struct {
+	Path   string
+	Method string
+}
+
 var (
-	NO_AUTH_NEEDED = []string{
-		"/hello",
-		"/login",
-		"/signup",
-		"/messages",
-		"/ws",
+	prefix        = "/api/v1"
+	NO_AUTH_RULES = []authRule{
+		{
+			Path:   prefix + "/hello",
+			Method: "GET",
+		},
+		{
+			Path:   prefix + "/messages",
+			Method: "GET",
+		},
+		{
+			Path:   prefix + "/login",
+			Method: "POST",
+		},
+		{
+			Path:   prefix + "/signup",
+			Method: "POST",
+		},
+		{
+			Path:   "/ws",
+			Method: "GET",
+		},
 	}
 )
 
@@ -54,9 +76,9 @@ func getPermissions(rolID int) ([]string, error) {
 	return permissions, nil
 }
 
-func shouldCheckToken(route string) bool {
-	for _, path := range NO_AUTH_NEEDED {
-		if strings.Contains(route, path) {
+func shouldCheckToken(rule authRule) bool {
+	for _, v := range NO_AUTH_RULES {
+		if v == rule {
 			return false
 		}
 	}
@@ -74,7 +96,14 @@ func extractTokenFromAuthHeader(authHeader string) string {
 func CheckJWT(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 
-		if !shouldCheckToken(c.Request().URL.Path) {
+		fmt.Println("checkea", c.Request().URL.Path, c.Request().Method)
+
+		rules := authRule{
+			Path:   c.Request().URL.Path,
+			Method: c.Request().Method,
+		}
+
+		if !shouldCheckToken(rules) {
 			return next(c)
 		}
 

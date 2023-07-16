@@ -14,6 +14,7 @@ func main() {
 	e := echo.New()
 
 	e.Use(middleware.Logger())
+	e.Use(middleware.CORS())
 
 	routes.RegisterRoutes(e)
 
