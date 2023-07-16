@@ -14,8 +14,10 @@ func RegisterRoutes(e *echo.Echo) {
 
 	e.Use(m.CustomContextMiddleware(hub), m.CheckJWT)
 
+	prefix := "/api/v1"
+
 	// Hello world
-	e.GET("/api/v1/hello", h.HelloWorld)
+	e.GET(prefix+"/hello", h.HelloWorld)
 
 	// Websocket
 	e.GET("/ws", func(c echo.Context) error {
@@ -23,23 +25,23 @@ func RegisterRoutes(e *echo.Echo) {
 	})
 
 	// Users
-	e.GET("/api/v1/users", h.GetUsers, m.CheckPermissions(h.GetUsersPerms))
-	e.GET("/api/v1/users/:id", h.GetOneUser)
+	e.GET(prefix+"/users", h.GetUsers, m.CheckPermissions(h.GetUsersPerms))
+	e.GET(prefix+"/users/:id", h.GetOneUser)
 	e.DELETE("api/v1/users/:id", h.DeleteUser, m.CheckPermissions(h.DeleteUserPerms))
-	e.PUT("/api/v1/users/:id", h.UpdateUser, m.ValidateUser)
-	e.POST("/api/v1/signup", h.Register, m.ValidateUser)
-	e.POST("/api/v1/login", h.Login)
+	e.PUT(prefix+"/users/:id", h.UpdateUser, m.ValidateUser)
+	e.POST(prefix+"/signup", h.Register, m.ValidateUser)
+	e.POST(prefix+"/login", h.Login)
 
 	// Messages
-	e.GET("/api/v1/messages", h.GetMessages)
-	e.POST("/api/v1/messages", h.CreateMessage,
+	e.GET(prefix+"/messages", h.GetMessages)
+	e.POST(prefix+"/messages", h.CreateMessage,
 		m.CheckPermissions(h.CreateMessagePerms),
 		m.ValidateUserByID,
 		m.ValidateMessage)
-	e.DELETE("/api/v1/messages/:id", h.DeleteMessage, m.CheckPermissions(h.DeleteMessagePerms))
+	e.DELETE(prefix+"/messages/:id", h.DeleteMessage, m.CheckPermissions(h.DeleteMessagePerms))
 
 	// Roles and permissions
-	e.POST("/api/v1/role", h.CreateRole, m.CheckPermissions(h.CreateRolePerms))
-	e.POST("/api/v1/permission", h.CreatePermission, m.CheckPermissions(h.CreatePermissionsPerms))
+	e.POST(prefix+"/role", h.CreateRole, m.CheckPermissions(h.CreateRolePerms))
+	e.POST(prefix+"/permission", h.CreatePermission, m.CheckPermissions(h.CreatePermissionsPerms))
 
 }
