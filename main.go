@@ -25,7 +25,7 @@ func main() {
 
 	fmt.Println(os.Getenv("PORT"))
 
-	if err := e.Start(PORT + ":5050"); err != nil {
+	if err := e.Start(":" + PORT); err != nil {
 		e.Logger.Fatal(err)
 	}
 }
