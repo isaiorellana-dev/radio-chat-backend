@@ -2,20 +2,18 @@ package database
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/isaiorellana-dev/radio-chat-backend/models"
-	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 func ConnectToDB() (*gorm.DB, error) {
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	// err := godotenv.Load(".env")
+	// if err != nil {
+	// 	log.Fatal("Error loading .env file")
+	// }
 	DB_URL := os.Getenv("DB_URL")
 
 	db, err := gorm.Open(mysql.Open(DB_URL), &gorm.Config{})

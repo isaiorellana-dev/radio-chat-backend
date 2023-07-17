@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -10,9 +9,7 @@ import (
 	"github.com/golang-jwt/jwt"
 	"github.com/isaiorellana-dev/radio-chat-backend/context"
 	data "github.com/isaiorellana-dev/radio-chat-backend/db"
-	"github.com/isaiorellana-dev/radio-chat-backend/models"
 	m "github.com/isaiorellana-dev/radio-chat-backend/models"
-	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -31,9 +28,9 @@ func Register(c echo.Context) error {
 		dbSQL.Close()
 	}()
 
-	if err := godotenv.Load(".env"); err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	// if err := godotenv.Load(".env"); err != nil {
+	// 	log.Fatal("Error loading .env file")
+	// }
 	HASH := os.Getenv("HASH_COST")
 	HASH_COST, err := strconv.Atoi(HASH)
 	if err != nil {
@@ -77,9 +74,9 @@ func Login(c echo.Context) error {
 		dbSQL.Close()
 	}()
 
-	if err := godotenv.Load(".env"); err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	// if err := godotenv.Load(".env"); err != nil {
+	// 	log.Fatal("Error loading .env file")
+	// }
 	JWT_SECRET := os.Getenv("JWT_SECRET")
 
 	var login = new(m.UserLogin)
@@ -146,7 +143,7 @@ func CreateMessage(c echo.Context) error {
 
 	var token = c.Get("token").(*jwt.Token)
 
-	claims, _ := token.Claims.(*models.AppClaims)
+	claims, _ := token.Claims.(*m.AppClaims)
 
 	cc := c.(*context.CustomContext)
 	hub := cc.Hub
@@ -161,7 +158,7 @@ func CreateMessage(c echo.Context) error {
 		})
 	}
 
-	var messageWithUser = models.MessageWithUser{
+	var messageWithUser = m.MessageWithUser{
 		ID:        message.ID,
 		Nickname:  claims.Nickname,
 		Body:      message.Body,
