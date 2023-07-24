@@ -1,16 +1,14 @@
 package models
 
 import (
-	"time"
-
 	"github.com/golang-jwt/jwt"
 )
 
 type UserToReturn struct {
-	ID        int       `json:"id"`
-	Nickname  string    `json:"nickname"`
-	Role      string    `json:"role"`
-	CreatedAt time.Time `json:"created_at"`
+	ID        int    `json:"id"`
+	Nickname  string `json:"nickname"`
+	Role      string `json:"role"`
+	CreatedAt string `json:"created_at"`
 }
 
 type UserLogin struct {
@@ -19,9 +17,9 @@ type UserLogin struct {
 }
 
 type UserRegister struct {
-	ID        int       `json:"id"`
-	Nickname  string    `json:"nickname"`
-	CreatedAt time.Time `json:"created_at"`
+	ID        int    `json:"id"`
+	Nickname  string `json:"nickname"`
+	CreatedAt string `json:"created_at"`
 }
 
 type UserLoginDB struct {

@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -11,7 +10,6 @@ import (
 	"github.com/isaiorellana-dev/radio-chat-backend/context"
 	data "github.com/isaiorellana-dev/radio-chat-backend/db"
 	m "github.com/isaiorellana-dev/radio-chat-backend/models"
-	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -30,9 +28,9 @@ func Register(c echo.Context) error {
 		dbSQL.Close()
 	}()
 
-	if err := godotenv.Load(".env"); err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	// if err := godotenv.Load(".env"); err != nil {
+	// 	log.Fatal("Error loading .env file")
+	// }
 	HASH := os.Getenv("HASH_COST")
 	HASH_COST, err := strconv.Atoi(HASH)
 	if err != nil {
@@ -76,9 +74,9 @@ func Login(c echo.Context) error {
 		dbSQL.Close()
 	}()
 
-	if err := godotenv.Load(".env"); err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	// if err := godotenv.Load(".env"); err != nil {
+	// 	log.Fatal("Error loading .env file")
+	// }
 	JWT_SECRET := os.Getenv("JWT_SECRET")
 
 	var login = new(m.UserLogin)
