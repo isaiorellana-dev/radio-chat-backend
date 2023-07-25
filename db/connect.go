@@ -15,8 +15,6 @@ func ConnectToDB() (*gorm.DB, error) {
 	// }
 	DB_URL := os.Getenv("DB_URL")
 
-	fmt.Println(DB_URL)
-
 	db, err := gorm.Open(mysql.Open(DB_URL), &gorm.Config{})
 	if err != nil {
 		return nil, fmt.Errorf("error conectando a la base de datos: %w", err)

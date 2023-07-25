@@ -20,7 +20,7 @@ var (
 	prefix        = "/api/v1"
 	NO_AUTH_RULES = []authRule{
 		{
-			Path:   "/",
+			Path:   "/hi",
 			Method: "GET",
 		},
 		{
