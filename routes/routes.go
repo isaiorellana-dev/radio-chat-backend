@@ -31,6 +31,7 @@ func RegisterRoutes(e *echo.Echo) {
 	e.PUT(prefix+"/users/:id", h.UpdateUser, m.ValidateUser)
 	e.POST(prefix+"/signup", h.Register, m.ValidateUser)
 	e.POST(prefix+"/login", h.Login)
+	e.GET(prefix+"/auth/user", h.UserData)
 
 	// Messages
 	e.GET(prefix+"/messages", h.GetMessages)

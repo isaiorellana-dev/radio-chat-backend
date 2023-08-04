@@ -24,6 +24,11 @@ type UserRegister struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
+type UserData struct {
+	Nickname string `json:"nickname"`
+	Role     string `json:"role"`
+}
+
 type UserLoginDB struct {
 	ID       int
 	Nickname string
