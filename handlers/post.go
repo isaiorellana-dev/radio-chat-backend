@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -10,6 +12,7 @@ import (
 	"github.com/isaiorellana-dev/radio-chat-backend/context"
 	data "github.com/isaiorellana-dev/radio-chat-backend/db"
 	m "github.com/isaiorellana-dev/radio-chat-backend/models"
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -28,9 +31,12 @@ func Register(c echo.Context) error {
 		dbSQL.Close()
 	}()
 
-	// if err := godotenv.Load(".env"); err != nil {
-	// 	log.Fatal("Error loading .env file")
-	// }
+	if os.Getenv("ENVIRONMENT") == "development" {
+		err := godotenv.Load(".env")
+		if err != nil {
+			log.Fatal("Error loading .env file")
+		}
+	}
 	HASH := os.Getenv("HASH_COST")
 	HASH_COST, err := strconv.Atoi(HASH)
 	if err != nil {
@@ -74,9 +80,12 @@ func Login(c echo.Context) error {
 		dbSQL.Close()
 	}()
 
-	// if err := godotenv.Load(".env"); err != nil {
-	// 	log.Fatal("Error loading .env file")
-	// }
+	if os.Getenv("ENVIRONMENT") == "development" {
+		err := godotenv.Load(".env")
+		if err != nil {
+			log.Fatal("Error loading .env file")
+		}
+	}
 	JWT_SECRET := os.Getenv("JWT_SECRET")
 
 	var login = new(m.UserLogin)
@@ -184,22 +193,22 @@ func CreateRole(c echo.Context) error {
 		dbSQL.Close()
 	}()
 
-	var Role = new(m.Role)
+	var role = new(m.Role)
 
-	if err := c.Bind(&Role); err != nil {
+	if err := c.Bind(&role); err != nil {
 		return c.JSON(http.StatusBadRequest, objectStr{
 			"message": "Invalid request body",
 			"error":   err.Error(),
 		})
 	}
 
-	if err := db.Create(&Role).Error; err != nil {
+	if err := db.Create(&role).Error; err != nil {
 		return c.JSON(http.StatusBadRequest, objectStr{
 			"error": err.Error(),
 		})
 	}
 
-	return c.JSON(http.StatusOK, Role)
+	return c.JSON(http.StatusOK, role)
 }
 
 func CreatePermission(c echo.Context) error {
@@ -216,20 +225,60 @@ func CreatePermission(c echo.Context) error {
 		dbSQL.Close()
 	}()
 
-	var Permission = new(m.Permission)
+	var permission = new(m.Permission)
 
-	if err := c.Bind(&Permission); err != nil {
+	if err := c.Bind(&permission); err != nil {
 		return c.JSON(http.StatusBadRequest, objectStr{
 			"message": "Invalid request body",
 			"error":   err.Error(),
 		})
 	}
 
-	if err := db.Create(&Permission).Error; err != nil {
+	if err := db.Create(&permission).Error; err != nil {
 		return c.JSON(http.StatusBadRequest, objectStr{
 			"error": err.Error(),
 		})
 	}
 
-	return c.JSON(http.StatusOK, Permission)
+	return c.JSON(http.StatusOK, permission)
+}
+
+func CreateRolePermission(c echo.Context) error {
+	db, err := data.ConnectToDB()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, objectStr{"error": err.Error()})
+	}
+
+	defer func() {
+		dbSQL, err := db.DB()
+		if err != nil {
+			return
+		}
+		dbSQL.Close()
+	}()
+
+	type associaton struct {
+		Role_id       int `json:"role_id"`
+		Permission_id int `json:"permission_id"`
+	}
+
+	var ass = new(associaton)
+
+	if err := c.Bind(&ass); err != nil {
+		return c.JSON(http.StatusBadRequest, objectStr{
+			"message": "Invalid request body",
+			"error":   err.Error(),
+		})
+	}
+
+	fmt.Println("Role permission:", ass)
+
+	if err := db.Table("role_permissions").Create(ass).Error; err != nil {
+		return c.JSON(http.StatusBadRequest, objectStr{
+			"message": "Invalid request body",
+			"error":   err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, ass)
 }

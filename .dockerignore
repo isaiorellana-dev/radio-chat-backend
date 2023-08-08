@@ -1,0 +1,22 @@
+# flyctl launch added from .gitignore
+**/*.o
+**/*.a
+**/*.so
+**/*.test
+**/*.prof
+**/*.out
+
+**/vendor
+**/tmp
+**/prompts
+
+# IDE specific files
+**/.vscode
+**/.idea
+
+# build output
+**/air
+
+**/.env
+**/.env.local
+fly.toml

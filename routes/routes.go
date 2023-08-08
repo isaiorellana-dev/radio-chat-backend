@@ -27,7 +27,7 @@ func RegisterRoutes(e *echo.Echo) {
 	// Users
 	e.GET(prefix+"/users", h.GetUsers, m.CheckPermissions(h.GetUsersPerms))
 	e.GET(prefix+"/users/:id", h.GetOneUser)
-	e.DELETE("api/v1/users/:id", h.DeleteUser, m.CheckPermissions(h.DeleteUserPerms))
+	e.DELETE(prefix+"/users/:id", h.DeleteUser, m.CheckPermissions(h.DeleteUserPerms))
 	e.PUT(prefix+"/users/:id", h.UpdateUser, m.ValidateUser)
 	e.POST(prefix+"/signup", h.Register, m.ValidateUser)
 	e.POST(prefix+"/login", h.Login)
@@ -42,7 +42,11 @@ func RegisterRoutes(e *echo.Echo) {
 	e.DELETE(prefix+"/messages/:id", h.DeleteMessage, m.CheckPermissions(h.DeleteMessagePerms))
 
 	// Roles and permissions
-	e.POST(prefix+"/role", h.CreateRole, m.CheckPermissions(h.CreateRolePerms))
-	e.POST(prefix+"/permission", h.CreatePermission, m.CheckPermissions(h.CreatePermissionsPerms))
+	e.GET(prefix+"/roles_secret", h.GetRoles)
+	e.GET(prefix+"/permissions_secret", h.GetPermissions)
+	e.POST(prefix+"/roles", h.CreateRole)
+	e.POST(prefix+"/permissions", h.CreatePermission)
+	e.POST(prefix+"/associations", h.CreateRolePermission)
+	e.GET(prefix+"/associations", h.GetAssociations)
 
 }

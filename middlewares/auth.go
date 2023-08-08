@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -8,6 +9,7 @@ import (
 	"github.com/golang-jwt/jwt"
 	data "github.com/isaiorellana-dev/radio-chat-backend/db"
 	"github.com/isaiorellana-dev/radio-chat-backend/models"
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 )
 
@@ -20,7 +22,7 @@ var (
 	prefix        = "/api/v1"
 	NO_AUTH_RULES = []authRule{
 		{
-			Path:   "/hi",
+			Path:   prefix + "/hi",
 			Method: "GET",
 		},
 		{
@@ -38,6 +40,30 @@ var (
 		{
 			Path:   "/ws",
 			Method: "GET",
+		},
+		{
+			Path:   prefix + "/roles_secret",
+			Method: "GET",
+		},
+		{
+			Path:   prefix + "/permissions_secret",
+			Method: "GET",
+		},
+		{
+			Path:   prefix + "/associations",
+			Method: "GET",
+		},
+		{
+			Path:   prefix + "/associations",
+			Method: "POST",
+		},
+		{
+			Path:   prefix + "/roles",
+			Method: "POST",
+		},
+		{
+			Path:   prefix + "/permissions",
+			Method: "POST",
 		},
 	}
 )
@@ -102,9 +128,12 @@ func CheckJWT(next echo.HandlerFunc) echo.HandlerFunc {
 			return next(c)
 		}
 
-		// if err := godotenv.Load(".env"); err != nil {
-		// 	log.Fatal("Error loading .env file")
-		// }
+		if os.Getenv("ENVIRONMENT") == "development" {
+			err := godotenv.Load(".env")
+			if err != nil {
+				log.Fatal("Error loading .env file")
+			}
+		}
 		JWT_SECRET := os.Getenv("JWT_SECRET")
 
 		authHeader := strings.TrimSpace(c.Request().Header.Get("Authorization"))

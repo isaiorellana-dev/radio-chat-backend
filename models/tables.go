@@ -2,8 +2,6 @@ package models
 
 import (
 	"time"
-
-	"gorm.io/gorm"
 )
 
 type User struct {
@@ -12,7 +10,8 @@ type User struct {
 	Pin       string    `json:"pin" validate:"required,min=4,numeric" gorm:"type:string;not null"`
 	CreatedAt time.Time `json:"created_at" gorm:"not null"`
 	UpdatedAt time.Time `json:"updated_at" gorm:"not null"`
-	RolID     int       `json:"rol_id" gorm:"type:int;foreignKey:RolID;not null;default:2"`
+	RolID     int       `gorm:"type:int;not null;default:1"`
+	Role      Role      `json:"Role" gorm:"foreignKey:RolID"`
 }
 
 type Message struct {
@@ -27,7 +26,8 @@ type Role struct {
 	Name       string       `json:"name" gorm:"not null;size:40"`
 	Permisions []Permission `gorm:"many2many:role_permissions;"`
 }
+
 type Permission struct {
-	gorm.Model
+	ID   int    `json:"id" gorm:"type:int;primaryKey;not null;autoIncrement;unique"`
 	Name string `json:"name" gorm:"not null;size:40"`
 }

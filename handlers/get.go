@@ -13,6 +13,85 @@ func HelloWorld(c echo.Context) error {
 	return c.String(http.StatusOK, "Hello, World!")
 }
 
+func GetRoles(c echo.Context) error {
+
+	db, err := data.ConnectToDB()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, objectStr{"error": err.Error()})
+	}
+
+	defer func() {
+		dbSQL, err := db.DB()
+		if err != nil {
+			return
+		}
+		dbSQL.Close()
+	}()
+
+	var roles []m.Role
+
+	if err := db.Find(&roles).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, objectStr{"error": err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, roles)
+
+}
+
+func GetPermissions(c echo.Context) error {
+
+	db, err := data.ConnectToDB()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, objectStr{"error": err.Error()})
+	}
+
+	defer func() {
+		dbSQL, err := db.DB()
+		if err != nil {
+			return
+		}
+		dbSQL.Close()
+	}()
+
+	var permissions []m.Permission
+
+	if err := db.Find(&permissions).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, objectStr{"error": err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, permissions)
+
+}
+
+func GetAssociations(c echo.Context) error {
+
+	db, err := data.ConnectToDB()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, objectStr{"error": err.Error()})
+	}
+
+	defer func() {
+		dbSQL, err := db.DB()
+		if err != nil {
+			return
+		}
+		dbSQL.Close()
+	}()
+
+	type associaton struct {
+		Role_id       int `json:"role_id"`
+		Permission_id int `json:"permission_id"`
+	}
+	var associations = []associaton{}
+
+	if err := db.Table("role_permissions").Find(&associations).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, objectStr{"error": err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, associations)
+
+}
+
 func GetUsers(c echo.Context) error {
 	db, err := data.ConnectToDB()
 	if err != nil {
