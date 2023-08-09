@@ -65,6 +65,18 @@ var (
 			Path:   prefix + "/permissions",
 			Method: "POST",
 		},
+		{
+			Path:   prefix + "/set_admin",
+			Method: "PATCH",
+		},
+		{
+			Path:   prefix + "/users",
+			Method: "GET",
+		},
+		{
+			Path:   prefix + "/users/:id",
+			Method: "DELETE",
+		},
 	}
 )
 
