@@ -42,40 +42,8 @@ var (
 			Method: "GET",
 		},
 		{
-			Path:   prefix + "/roles_secret",
-			Method: "GET",
-		},
-		{
-			Path:   prefix + "/permissions_secret",
-			Method: "GET",
-		},
-		{
-			Path:   prefix + "/associations",
-			Method: "GET",
-		},
-		{
-			Path:   prefix + "/associations",
-			Method: "POST",
-		},
-		{
-			Path:   prefix + "/roles",
-			Method: "POST",
-		},
-		{
-			Path:   prefix + "/permissions",
-			Method: "POST",
-		},
-		{
 			Path:   prefix + "/set_admin",
 			Method: "PATCH",
-		},
-		{
-			Path:   prefix + "/users",
-			Method: "GET",
-		},
-		{
-			Path:   prefix + "/users/:id",
-			Method: "DELETE",
 		},
 	}
 )

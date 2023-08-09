@@ -11,10 +11,17 @@ var CreateMessagePerms = sliceStr{
 	"post_messages",
 }
 
+var GetRolesPerms = sliceStr{
+	"view_list_of_roles",
+}
+
 var CreateRolePerms = sliceStr{
 	"create_roles",
 	"view_list_of_roles",
 	"assign_roles",
+}
+var GetPermissionsPerms = sliceStr{
+	"view_list_of_permissions",
 }
 
 var CreatePermissionsPerms = sliceStr{
