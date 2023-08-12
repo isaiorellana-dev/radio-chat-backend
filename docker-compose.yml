@@ -1,25 +1,10 @@
-version: "3.9"
+version: '3'
 services:
-  db-server:
-    image: mysql:latest
-    restart: always
+  postgres:
+    image: postgres
+    container_name: some-postgres
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      POSTGRES_PASSWORD: mysecretpassword
     ports:
-      - "3306:3306"
-    volumes:
-      - db-server-data:/var/lib/mysql
-    hostname: db-server
+      - "5432:5432"
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin:latest
-    restart: always
-    environment:
-      PMA_HOST: db-server
-      MYSQL_ROOT_PASSWORD: root
-    ports:
-      - "8080:80"
-    depends_on:
-      - db-server
-volumes:
-  db-server-data:
