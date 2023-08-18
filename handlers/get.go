@@ -106,7 +106,16 @@ func UserData(c echo.Context) error {
 
 	var userData m.UserData
 
-	db.Select("users.nickname, roles.name as role").Joins("JOIN roles ON roles.id = users.rol_id").First(&m.User{}, claims.UserID).Scan(&userData)
+	if err := db.
+		Select("users.nickname, roles.name as role").
+		Joins("JOIN roles ON roles.id = users.rol_id").
+		First(&m.User{}, claims.UserID).
+		Scan(&userData).
+		Error; err != nil {
+		return c.JSON(http.StatusUnauthorized, objectStr{
+			"error": err.Error(),
+		})
+	}
 
 	return c.JSON(http.StatusOK, userData)
 }

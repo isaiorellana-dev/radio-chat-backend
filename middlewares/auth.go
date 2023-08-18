@@ -41,10 +41,6 @@ var (
 			Path:   "/ws",
 			Method: "GET",
 		},
-		{
-			Path:   prefix + "/set_admin",
-			Method: "PATCH",
-		},
 	}
 )
 
