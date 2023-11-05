@@ -20,7 +20,7 @@ docker-compose up
 go run main.go
 ```
 
-El servidor estara corriendo en `localhost:5050`, puedes hacer una prueba haciendo una peticion `GET` al endpoint `http://localhost:5050/api/v1/hello`
+El servidor estara corriendo en `localhost:5050`, puedes hacer una prueba haciendo una peticion `GET` al endpoint `http://localhost:5050/api/v1/hi`
 
 Para crear o administrar graficamente la base de datos estara disponible en `localhost:8080` una instancia de phpmyadmin.
 

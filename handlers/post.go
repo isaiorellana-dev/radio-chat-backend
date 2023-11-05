@@ -9,9 +9,9 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt"
-	"github.com/isaiorellana-dev/radio-chat-backend/context"
-	data "github.com/isaiorellana-dev/radio-chat-backend/db"
-	m "github.com/isaiorellana-dev/radio-chat-backend/models"
+	"github.com/isaiorellana-dev/livechat-backend/context"
+	data "github.com/isaiorellana-dev/livechat-backend/db"
+	m "github.com/isaiorellana-dev/livechat-backend/models"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
@@ -281,4 +281,79 @@ func CreateRolePermission(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, ass)
+}
+
+func InitScript(c echo.Context) error {
+	db, err := data.ConnectToDB()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, objectStr{"error": err.Error()})
+	}
+
+	defer func() {
+		dbSQL, err := db.DB()
+		if err != nil {
+			return
+		}
+		dbSQL.Close()
+	}()
+
+	permissions := []*m.Permission{
+		&postMessages,
+		&deleteMessages,
+		&deleteUsers,
+		&viewListOfUsers,
+		&viewListOfRoles,
+		&viewListOfPermissions,
+		&assignRoles,
+		&createRoles,
+		&createPermissions,
+	}
+	for _, p := range permissions {
+		if err := db.Create(&p).Error; err != nil {
+			return c.JSON(http.StatusInternalServerError, err.Error())
+		}
+	}
+
+	roles := []*m.Role{
+		&guest,
+		&admin,
+		&dev,
+	}
+	for _, r := range roles {
+		if err := db.Create(&r).Error; err != nil {
+			return c.JSON(http.StatusInternalServerError, err.Error())
+		}
+	}
+
+	if err := db.Model(&admin).Association("Permissions").Append(
+		&postMessages,
+		&deleteMessages,
+		&deleteUsers,
+		&viewListOfUsers,
+	); err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	if err := db.Model(&guest).Association("Permissions").Append(
+		&postMessages,
+	); err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	if err := db.Model(&dev).Association("Permissions").Append(
+		&postMessages,
+		&deleteMessages,
+		&deleteUsers,
+		&viewListOfUsers,
+		&viewListOfRoles,
+		&assignRoles,
+		&createRoles,
+		&createPermissions,
+	); err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, objectStr{
+		"message": "script done",
+	})
 }

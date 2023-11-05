@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"github.com/golang-jwt/jwt"
-	data "github.com/isaiorellana-dev/radio-chat-backend/db"
-	"github.com/isaiorellana-dev/radio-chat-backend/models"
+	data "github.com/isaiorellana-dev/livechat-backend/db"
+	"github.com/isaiorellana-dev/livechat-backend/models"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 )
@@ -42,8 +42,12 @@ var (
 			Method: "GET",
 		},
 		{
-			Path:   prefix + "/set_admin",
-			Method: "PATCH",
+			Path:   prefix + "/init_script",
+			Method: "POST",
+		},
+		{
+			Path:   prefix + "/dev",
+			Method: "PUT",
 		},
 	}
 )

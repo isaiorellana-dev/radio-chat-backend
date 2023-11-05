@@ -1,25 +1,14 @@
 version: "3.9"
 services:
   db-server:
-    image: mysql:latest
+    image: postgres:latest
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      POSTGRES_PASSWORD: root
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - db-server-data:/var/lib/mysql
+      - db-server-data:/var/lib/postgresql/dev-data
     hostname: db-server
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin:latest
-    restart: always
-    environment:
-      PMA_HOST: db-server
-      MYSQL_ROOT_PASSWORD: root
-    ports:
-      - "8080:80"
-    depends_on:
-      - db-server
 volumes:
   db-server-data:

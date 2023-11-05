@@ -1,9 +1,9 @@
 package routes
 
 import (
-	h "github.com/isaiorellana-dev/radio-chat-backend/handlers"
-	m "github.com/isaiorellana-dev/radio-chat-backend/middlewares"
-	ws "github.com/isaiorellana-dev/radio-chat-backend/websocket"
+	h "github.com/isaiorellana-dev/livechat-backend/handlers"
+	m "github.com/isaiorellana-dev/livechat-backend/middlewares"
+	ws "github.com/isaiorellana-dev/livechat-backend/websocket"
 	"github.com/labstack/echo/v4"
 )
 
@@ -48,5 +48,9 @@ func RegisterRoutes(e *echo.Echo) {
 	e.POST(prefix+"/permissions", h.CreatePermission, m.CheckPermissions(h.CreatePermissionsPerms))
 	e.POST(prefix+"/associations", h.CreateRolePermission, m.CheckPermissions(h.CreateRolePerms))
 	e.GET(prefix+"/associations", h.GetAssociations, m.CheckPermissions(h.CreateRolePerms))
+
+	// temporal routes
+	e.POST(prefix+"/init_script", h.InitScript)
+	e.PUT(prefix+"/dev", h.IntiDev)
 
 }

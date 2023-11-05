@@ -1,4 +1,4 @@
-module github.com/isaiorellana-dev/radio-chat-backend
+module github.com/isaiorellana-dev/livechat-backend
 
 go 1.20
 

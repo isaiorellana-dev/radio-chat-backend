@@ -1,7 +1,7 @@
 package ws
 
 import (
-	m "github.com/isaiorellana-dev/radio-chat-backend/models"
+	m "github.com/isaiorellana-dev/livechat-backend/models"
 )
 
 type Hub struct {

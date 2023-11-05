@@ -22,12 +22,12 @@ type Message struct {
 }
 
 type Role struct {
-	ID         int          `json:"id" gorm:"type:int;primaryKey;not null;autoIncrement;unique"`
-	Name       string       `json:"name" gorm:"not null;size:40"`
-	Permisions []Permission `gorm:"many2many:role_permissions;"`
+	ID          int          `json:"id" gorm:"type:int;primaryKey;not null;autoIncrement;unique"`
+	Name        string       `json:"name" gorm:"not null;size:40;unique"`
+	Permissions []Permission `gorm:"many2many:role_permissions"`
 }
 
 type Permission struct {
 	ID   int    `json:"id" gorm:"type:int;primaryKey;not null;autoIncrement;unique"`
-	Name string `json:"name" gorm:"not null;size:40"`
+	Name string `json:"name" gorm:"not null;size:40;unique"`
 }

@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/isaiorellana-dev/radio-chat-backend/models"
+	"github.com/isaiorellana-dev/livechat-backend/models"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

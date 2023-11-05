@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for radio-chat-backend on 2023-08-08T08:21:23-06:00
+# fly.toml app configuration file generated for livechat-back on 2023-09-24T17:39:47-06:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "radio-chat-backend"
+app = "livechat-back"
 primary_region = "gdl"
 
 [build]

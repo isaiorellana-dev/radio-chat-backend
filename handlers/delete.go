@@ -3,8 +3,8 @@ package handlers
 import (
 	"net/http"
 
-	data "github.com/isaiorellana-dev/radio-chat-backend/db"
-	"github.com/isaiorellana-dev/radio-chat-backend/models"
+	data "github.com/isaiorellana-dev/livechat-backend/db"
+	"github.com/isaiorellana-dev/livechat-backend/models"
 	"github.com/labstack/echo/v4"
 )
 

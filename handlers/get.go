@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/golang-jwt/jwt"
-	data "github.com/isaiorellana-dev/radio-chat-backend/db"
-	m "github.com/isaiorellana-dev/radio-chat-backend/models"
+	data "github.com/isaiorellana-dev/livechat-backend/db"
+	m "github.com/isaiorellana-dev/livechat-backend/models"
 	"github.com/labstack/echo/v4"
 )
 
@@ -159,7 +159,7 @@ func GetMessages(c echo.Context) error {
 
 	var messages []m.MessageWithUser
 
-	if err := db.Find(&[]m.Message{}).Select("messages.id, messages.body, messages.created_at, users.nickname").Joins("JOIN users ON messages.user_id = users.id").Scan(&messages).Error; err != nil {
+	if err := db.Find(&[]m.Message{}).Select("messages.id, messages.body, messages.created_at, users.nickname").Joins("JOIN users ON messages.user_id = users.id").Order("id desc").Scan(&messages).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, objectStr{"error": err.Error()})
 	}
 

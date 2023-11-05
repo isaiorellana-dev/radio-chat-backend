@@ -1,7 +1,7 @@
 package context
 
 import (
-	ws "github.com/isaiorellana-dev/radio-chat-backend/websocket"
+	ws "github.com/isaiorellana-dev/livechat-backend/websocket"
 	"github.com/labstack/echo/v4"
 )
 

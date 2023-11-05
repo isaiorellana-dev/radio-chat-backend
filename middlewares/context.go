@@ -1,8 +1,8 @@
 package middlewares
 
 import (
-	"github.com/isaiorellana-dev/radio-chat-backend/context"
-	ws "github.com/isaiorellana-dev/radio-chat-backend/websocket"
+	"github.com/isaiorellana-dev/livechat-backend/context"
+	ws "github.com/isaiorellana-dev/livechat-backend/websocket"
 	"github.com/labstack/echo/v4"
 )
 

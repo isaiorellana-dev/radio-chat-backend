@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	m "github.com/isaiorellana-dev/radio-chat-backend/models"
+	m "github.com/isaiorellana-dev/livechat-backend/models"
 	"github.com/labstack/echo/v4"
 )
 
